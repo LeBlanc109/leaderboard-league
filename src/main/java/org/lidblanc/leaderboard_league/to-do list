@@ -1,0 +1,17 @@
+1. Figure out what to put in to do list
+
+2.
+
+3. Service File for Business Logic
+
+4. @Autowiring components
+
+5.Controller Formatting:
+    @PostMapping("/register")
+        public ResponseEntity<?> registerAccount(@RequestBody Account account){
+            Account registeredAccount = accountService.addAccount(account);
+            return ResponseEntity.ok(registeredAccount);
+
+
+
+
