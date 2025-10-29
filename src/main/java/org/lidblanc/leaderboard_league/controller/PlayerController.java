@@ -2,14 +2,18 @@ package org.lidblanc.leaderboard_league.controller;
 
 import org.lidblanc.leaderboard_league.boundary.RiotApiComponent;
 import org.lidblanc.leaderboard_league.dto.UserDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.lidblanc.leaderboard_league.entity.RiotAccount;
+import org.lidblanc.leaderboard_league.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test/riot")
 public class PlayerController {
+
+    @Autowired
+    AccountService accountService;
 
     private final RiotApiComponent riot;
 
@@ -20,5 +24,12 @@ public class PlayerController {
     @GetMapping("/account")
     public UserDto account(@RequestParam String gameName, @RequestParam String tagLine) {
         return riot.getAccountByRiotId(gameName, tagLine);
+    }
+
+    //Starting here:
+    @PostMapping("/addAccount")
+    public ResponseEntity<?> registerAccount(@RequestBody RiotAccount riotAccount){
+        RiotAccount trackedAccount = accountService.trackAccount(riotAccount);
+        return ResponseEntity.ok(trackedAccount);
     }
 }

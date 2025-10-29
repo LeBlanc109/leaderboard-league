@@ -1,5 +1,37 @@
-Start with the URL's and go from there:
-    URL's we need FROM RIOT:
-         1. https://developer.riotgames.com/apis#account-v1/GET_getByRiotId
-         endpoint: /riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}
+org.lidblanc.leaderboard_league
+├─ config/
+│  ├─ RiotApiProperties   // baseUrl, apiKey, default route, timeouts
+│  └─ HttpClientConfig    // RestTemplate/WebClient bean, interceptors
+├─ boundary/              // “transport layer”: talks to Riot over HTTP
+│  ├─ RiotApiClient       // interface
+│  └─ RiotApiClientHttp   // implementation using RestTemplate/WebClient
+├─ application/           // orchestration/use-cases
+│  └─ MatchHistoryService // (gameName,tagLine) -> User -> MatchIds
+├─ domain/                // app’s own shapes (transport-agnostic)
+│  ├─ model/
+│  │  ├─ UserAccount      // puuid, gameName, tagLine
+│  │  └─ MatchIds         // puuid, ids[], fetchedAt, paging
+│  └─ service/            // optional domain logic (filters, rules)
+├─ dto/                   // inbound/outbound DTOs for your REST API
+│  ├─ UserDto
+│  └─ MatchListDto
+├─ mapping/
+│  ├─ UserMappers         // Riot <-> Domain <-> DTO
+│  └─ MatchMappers
+├─ web/                   // your controllers
+│  └─ PlayerController
+├─ support/
+│  ├─ RiotErrors          // typed exceptions
+│  ├─ Retry/backoff utils // (optional)
+│  └─ RateLimitInfo       // (optional: parsed headers)
+
+
+
+this is definitely too much, but...
+1. Spring Web, HTTP Rest Template
+2. ResponseEntity
+3. Object Mapper
+4. Dto
+5. different folders more abstraction
+6.
 
