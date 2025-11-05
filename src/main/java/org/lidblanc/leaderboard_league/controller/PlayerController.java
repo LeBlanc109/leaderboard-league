@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/test/riot")
-public class PlayerController {
+public class
+PlayerController {
 
     @Autowired
     AccountService accountService;
@@ -28,8 +29,18 @@ public class PlayerController {
 
     //Starting here:
     @PostMapping("/addAccount")
-    public ResponseEntity<?> registerAccount(@RequestBody RiotAccount riotAccount){
+    public ResponseEntity<?> registerAccount(@RequestBody RiotAccount riotAccount) {
         RiotAccount trackedAccount = accountService.trackAccount(riotAccount);
         return ResponseEntity.ok(trackedAccount);
+    }
+
+    // get match list, attach it to dto
+    @GetMapping("/matches")
+    public UserDto getMatches(@RequestParam String gameName, @RequestParam String tagLine) {
+        // First get the account info (for puuid)
+        UserDto user = riot.getAccountByRiotId(gameName, tagLine);
+        // Then populate its match list
+        riot.getMatchListByPuuid(user);
+        return user;
     }
 }
